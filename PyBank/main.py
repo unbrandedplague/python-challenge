@@ -10,6 +10,8 @@ csv_name = "budget_data.csv"
 
 # using the os packages to pull file
 csv_path = os.path.join(path, csv_name)
+# using path to save to txt
+file_to_save = os.path.join("Analysis","analysis.txt")
 
 # open files
 with open(csv_path) as file:
@@ -37,31 +39,33 @@ with open(csv_path) as file:
         Profit_Losses.append (int(row[1]))
         Net_Change_List.append(int(row[1])-Previous_Profit_Loss)
         Previous_Profit_Loss =int(row[1])                                                             
- #print first column
-print("Date")
-print(type(Date[0]))
-    
-#list out your rows
-print("length of my list")
-print(len(Date))
-      
-# print second column
-print("Profit/Losses")
-print(type(Profit_Losses[1])) 
 
-#list out your rows
-print("length of my list")
-print(len(Profit_Losses)) 
+
+# total months
+print(f"Total Months: {len(Date)}")
 
 # Total of Profit_Losses
+print (f"Total: ${sum(Profit_Losses)}")
 
-Total = sum(Profit_Losses)
+# average change
+print(f"Average Change: {round(sum(Net_Change_List)/len(Net_Change_List),2)}")
 
-print (Total)
+# Greatest Increase and decrease
+greatest = max(Net_Change_List)
+worst = min(Net_Change_List)
 
-Averagechange = sum(Net_Change_List)/len(Net_Change_List)
-print(Averagechange)
+# calculate min and max
+greatest_month = Net_Change_List.index(max(Net_Change_List))+1
+print(f"Greatest Increase: {Date[greatest_month]} (${(str(greatest))})")
 
-# Greatest Increase
+worst_month = Net_Change_List.index(min(Net_Change_List))+1
+print(f"Greatest Decrease: {Date[worst_month]} (${(str(worst))})")
 
-#Greatest Decrease
+with open(file_to_save, "w") as txt_file:
+    txt_file.write("Financial Analysis\n")
+    txt_file.write("------------------\n")
+    txt_file.write(f"Total Months: {len(Date)}\n")
+    txt_file.write(f"Total: ${sum(Profit_Losses)}\n")
+    txt_file.write(f"Average Change: {round(sum(Net_Change_List)/len(Net_Change_List),2)}\n")
+    txt_file.write(f"Greatest Increase: {Date[greatest_month]} (${(str(greatest))})\n")
+    txt_file.write(f"Greatest Decrease: {Date[worst_month]} (${(str(worst))})\n")
